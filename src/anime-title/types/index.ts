@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Op } from 'sequelize';
 
 class AnimeTitle {
   @ApiProperty({ example: 1 })
@@ -131,4 +132,27 @@ export class GetOneTitleWithEpisodesResponse {
 
   @ApiProperty({ type: AnimeTitleEpisodesWithCount })
   episodes: AnimeTitleEpisodesWithCount;
+}
+
+export interface AnimeTitleQueryProps {
+  limit: string;
+  offset: string;
+  genre: string | undefined;
+  studio: string | undefined;
+  dateReleasFrom: string | undefined;
+  dateReleasTo: string | undefined;
+}
+
+export interface AnimeTitleFilterProps {
+  genre: string | undefined;
+  studio: string | undefined;
+  date: { [Op.between]: string[] };
+}
+
+export class PaginateAndFilterResponse {
+  @ApiProperty({ example: 33 })
+  count: number;
+
+  @ApiProperty({ type: AnimeTitle, isArray: true })
+  rows: AnimeTitle;
 }

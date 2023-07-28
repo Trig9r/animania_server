@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Param, Body, Query } from '@nestjs/common';
 import { AnimeTitleService } from './anime-title.service';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
@@ -10,6 +10,7 @@ import {
   GetOneTitleResponse,
   GetOneTitleWithEpisodesRequest,
   GetOneTitleWithEpisodesResponse,
+  PaginateAndFilterResponse,
 } from './types';
 
 @Controller('anime-title')
@@ -17,8 +18,14 @@ import {
 export class AnimeTitleController {
   constructor(private readonly animeTitleService: AnimeTitleService) {}
 
-  @ApiOkResponse({ type: GetAllAnimeTitlesResponce })
+  @ApiOkResponse({ type: PaginateAndFilterResponse })
   @Get()
+  paginateAndFilter(@Query() query) {
+    return this.animeTitleService.paginateAndFilter(query);
+  }
+
+  @ApiOkResponse({ type: GetAllAnimeTitlesResponce })
+  @Get('/all')
   getAll() {
     return this.animeTitleService.getAll();
   }
